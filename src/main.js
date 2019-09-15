@@ -33,6 +33,7 @@ window.addEventListener('popstate',()=>{
   location.reload();
 });
 
+router.push({ name: "screen1" });
 
 
 
@@ -44,5 +45,6 @@ new Vue({
   data: {
     prev: ''
   }
+  
 
 }).$mount('#app');
