@@ -1,28 +1,59 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <router-view @transmit="goOn" :prev="prev" :seconds='seconds' :key="$route.fullPath"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import screen1 from "./components/Screen1.vue";
+import screen2 from "./components/Screen2.vue";
+import screen3 from "./components/Screen3.vue";
+
+import { setInterval } from "timers";
 
 export default {
-  name: 'app',
+  name: "app",
+  
+    data() {
+      return {
+        prev: "",
+        seconds: "",
+        next: ""
+      };
+    },
+  
   components: {
-    HelloWorld
+    screen1,
+    screen2,
+    screen3
+  },
+  methods: {
+    goOn(data) {
+      // this.$router.go();
+      this.prev = data.prev;
+      this.opacity = data.opacity;
+      this.seconds = data.timeout;
+      this.next = data.next;
+      this.countdown();
+    },
+    countdown(){
+       setTimeout(() => {
+        this.seconds--;
+        if (this.seconds <= 3) {
+          this.$children[0].blink();
+        }
+        if (this.seconds > 0) {
+          this.countdown();
+        }else {
+          this.$router.push({ name: this.next });
+        }
+      }, 1000);
+    }
   }
-}
+};
+
+
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
